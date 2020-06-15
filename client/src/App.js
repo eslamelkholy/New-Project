@@ -1,11 +1,14 @@
 import React from 'react';
-import './App.css';
+import {BrowserRouter, Route} from 'react-router-dom';
+import Login from './components/authentication/Login';
+import Reigster from './components/authentication/Register';
 
 function App() {
   return (
-    <div>
-      Hello From Front end with Mug Of Coffe
-    </div>
+    <BrowserRouter>
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/register" component={Reigster} />
+    </BrowserRouter>
   );
 }
 
