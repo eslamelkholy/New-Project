@@ -9,7 +9,7 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->string("title");
             $table->string("description");
             $table->string("picture");

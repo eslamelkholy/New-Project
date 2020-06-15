@@ -12,7 +12,7 @@ class User extends Authenticatable
     use HasApiTokens,Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'picture'
+        'name', 'email', 'password', 'date_of_birth'
     ];
 
     protected $hidden = [
@@ -27,7 +27,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Article', 'user_id');
     }
-    
+
     public function favorites()
     {
         return $this->belongsToMany('App\Article', 'user_favorites')->withTimestamps();
