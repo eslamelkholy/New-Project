@@ -14,7 +14,7 @@ class UserController extends Controller
     public function register(UserValidateRequest $request)
     {
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
+        $input['password'] = bcrypt("123");
         $user = User::create($input);
         $user->save();
         $tokenResult = $user->createToken('Personal Access Token');

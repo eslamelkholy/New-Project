@@ -15,8 +15,12 @@ const Message = props =>{
     const classes = useStyles();
     return(
         <div className={classes.root}>
+            {
+              props.message.success? 
+                <Alert severity="success">{props.message.message}</Alert>
+                :<Alert severity="error">{props.message.message}</Alert>
+            }
             
-            <Alert severity="error">{props.message}</Alert>
         </div>
     )
 }

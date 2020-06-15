@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -9,10 +9,64 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
-const Register = () => {
+import AuthService from "../../Service/authService";
+import { AuthContext } from "../../Context/AuthContext";
+import Message from "../Message/UserMessage";
+const Register = (props) => {
+    const [user, setUser] = useState({
+        name: "",
+        email: "",
+        date_of_birth: "1997-03-13",
+    });
+    const [errors, setErrors] = useState({});
+    const [message, setMessage] = useState(null);
     const classes = useStyles();
-
+    let timerID = useRef(null);
+    useEffect(() => {
+        return () => {
+            clearTimeout(timerID);
+        };
+    }, []);
+    const onChange = (e) => {
+        setUser({ ...user, [e.target.name]: e.target.value });
+    };
+    const resetForm = () => {
+        setUser({ username: "", password: "", email: "", date_of_birth: "" });
+    };
+    const checkIfValid = () => {
+        const errors = {};
+        let isValid = true;
+        if (user.name.length < 5) {
+            errors.name = "name must be At least 5 Characters";
+            isValid = false;
+        }
+        if (!user.email.includes("@")) {
+            errors.email = "Please enter a Valid Email";
+            isValid = false;
+        }
+        setErrors(errors);
+        console.log(isValid);
+        return isValid;
+    };
+    const onsubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (checkIfValid()) {
+                const res = await AuthService.register(user);
+                setMessage({
+                    message: "Registedred Succesfully you will Redirect to Login Now..",
+                    success: true,
+                });
+                resetForm();
+                timerID = setTimeout(() => {
+                    props.history.push("/login");
+                }, 4000);
+            }
+        } catch (err) {
+            console.log(err);
+            setErrors({ uniqueEmail: "Sorry This Email Already Exist" });
+        }
+    };
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -23,7 +77,7 @@ const Register = () => {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={12}>
                             <TextField
@@ -34,9 +88,18 @@ const Register = () => {
                                 label="name"
                                 name="name"
                                 autoComplete="name"
+                                onChange={onChange}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        {errors.name ? (
+                            <Message
+                                message={{
+                                    message: errors.name,
+                                    success: false,
+                                }}
+                            />
+                        ) : null}
+                        <Grid item xs={12}  >
                             <TextField
                                 variant="outlined"
                                 required
@@ -45,18 +108,28 @@ const Register = () => {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                onChange={onChange}
                             />
                         </Grid>
+                        {errors.email ? (
+                            <Message
+                                message={{
+                                    message: errors.email,
+                                    success: false,
+                                }}
+                            />
+                        ) : null}
                         <Grid item xs={12}>
                             <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                id="date"
+                                label="Birthday"
+                                type="date"
+                                defaultValue={user.date_of_birth}
+                                className={classes.textField}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onChange={onChange}
                             />
                         </Grid>
                     </Grid>
@@ -66,10 +139,24 @@ const Register = () => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={onsubmit}
                     >
                         Sign Up
                     </Button>
                     <Grid container justify="flex-end">
+                        {errors.uniqueEmail ? (
+                            <Message
+                                message={{
+                                    message: errors.uniqueEmail,
+                                    success: false,
+                                }}
+                            />
+                        ) : null}
+                        {message ? (
+                            <Message
+                                message={message}
+                            />
+                        ) : null}
                         <Grid item>
                             <Link href="/login" variant="body2">
                                 Already have an account? Sign in
@@ -101,4 +188,7 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    textField: {
+        width: "100%",
+      }
 }));

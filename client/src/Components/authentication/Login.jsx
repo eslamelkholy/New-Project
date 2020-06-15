@@ -22,14 +22,15 @@ const Login = (props) => {
   const onsubmit = (e)=>{
     e.preventDefault();
       AuthService.login(user).then(data => {
+        console.log(data)
         const {access_token, user} = data;
         localStorage.setItem("token", access_token);
         authContext.setUser(user);
         authContext.setIsAuthenticated(true);
-        props.history.push("/home");
+        // props.history.push("/home");
       }).catch((err) => {
             if(err.response?.status === 400)
-              setMessage("Sorry Invalid Email or Password..");
+              setMessage({message: "Sorry Invalid Email or Password..", success:false});
       })
   }
   const classes = useStyles();
@@ -84,7 +85,7 @@ return (
             <Grid container>
             {message ? <Message message={message} />: null}
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -3,10 +3,10 @@ import Axios from 'axios';
 
 export default{
     login: user =>{
-        return axiosinstance.post("api/auth/login", user).then(res => res.data)
+        return Axios.post("api/auth/login", user).then(res => res.data).catch(err => err)
     },
     register: user =>{
-        return axiosinstance.post("api/auth/register", user).then(res => res.data)
+        return Axios.post("api/auth/register", user).then(res => res.data)
     },
     logout:()=>{
         localStorage.removeItem("token");

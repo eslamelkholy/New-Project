@@ -12,8 +12,6 @@ class UserValidateRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string',
-            'name' => 'required|string',
         ];
     }
     public function messages()
@@ -25,8 +23,6 @@ class UserValidateRequest extends FormRequest
             'email.required' => 'email is required',
             'email.email' => 'you should enter a valid email',
             'email.unique' => 'this email already exists',
-            'password.string' => 'password must be string',
-            'password.required' => 'password is required',
 
         ];
     }
