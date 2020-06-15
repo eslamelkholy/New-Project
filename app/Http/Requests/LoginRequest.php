@@ -19,7 +19,7 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'email is required',
             'email.email' => 'you should enter a valid email',
-            'password.string' => 'passworde  is string',
+            'password.string' => 'password must be string',
             'password.required' => 'password is required',
         ];
     }

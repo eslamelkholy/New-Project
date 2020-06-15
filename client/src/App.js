@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Route} from 'react-router-dom';
-import Login from './components/authentication/Login';
-import Reigster from './components/authentication/Register';
+import Login from './Components/authentication/Login';
+import Reigster from './Components/authentication/Register';
 
 function App() {
   return (

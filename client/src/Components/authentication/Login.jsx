@@ -1,21 +1,40 @@
-import React from 'react';
+import React, { useState, useContext } from "react";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
-
-const Login = () => {
+import AuthService from '../../Service/authService';
+import { AuthContext } from "../../Context/AuthContext";
+import Message from "../Message/UserMessage";
+const Login = (props) => {
+  const [user, setUser] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState(null);
+  const authContext = useContext(AuthContext);
+  const onChange = e =>{
+      setUser({...user, [e.target.name] :e.target.value});
+  }
+  const onsubmit = (e)=>{
+    e.preventDefault();
+      AuthService.login(user).then(data => {
+        const {access_token, user} = data;
+        localStorage.setItem("token", access_token);
+        authContext.setUser(user);
+        authContext.setIsAuthenticated(true);
+        props.history.push("/home");
+      }).catch((err) => {
+            if(err.response?.status === 400)
+              setMessage("Sorry Invalid Email or Password..");
+      })
+  }
   const classes = useStyles();
 
-  return (
+return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -38,6 +57,7 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={onChange}
             />
             <TextField
               variant="outlined"
@@ -49,6 +69,7 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={onChange}
             />
             <Button
               type="submit"
@@ -56,10 +77,12 @@ const Login = () => {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={onsubmit}
             >
               Sign In
             </Button>
             <Grid container>
+            {message ? <Message message={message} />: null}
               <Grid item>
                 <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
