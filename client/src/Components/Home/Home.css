@@ -1,10 +1,11 @@
 .newsContainer{
-    margin-top: 10px;
+    margin-top: -50px;
 }
 .newsDate{
     margin-bottom: -3px;
     color: tomato;
     font-weight: bold;
+    font-size: 18px;
 }
 .eventRecords{
     float: right;

@@ -11,10 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import NavBar from '../Navbar/Navbar';
 import NewsHeadline from './NewsHeadlines';
+import './Home.css';
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const Home = (props) => {
   const classes = useStyles();
-
   return (
     <React.Fragment>
       <CssBaseline />

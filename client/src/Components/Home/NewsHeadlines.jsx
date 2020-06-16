@@ -1,30 +1,27 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import axiosInstance from '../../Service/axiosInstance';
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import GetNewsService from '../../Service/GetNewsService';
+// Styles
+import TabPanel from './style/TabPanel';
+import a11yProps from './style/scrollStyle';
+import useStyles from './style/headLinesStyle';
 const NewsHeadline = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [newsHeadlines, setNewsHeadlines] = React.useState([]);
-  const url = 'http://newsapi.org/v2/top-headlines?' +
-          'country=eg&' +
-          'apiKey='+ process.env.REACT_APP_NEWS_API_KEY;
-          
   const getNewsHeadlines = async () => {
-    const newsResult = await axiosInstance.get(url);
+    const newsResult = await GetNewsService();
     console.log(newsResult.data.articles);
     setNewsHeadlines(newsResult.data.articles);
   };
@@ -53,12 +50,12 @@ const NewsHeadline = (props) => {
       </AppBar>
       {newsHeadlines.map((news, index) => {
         return (
-          <TabPanel value={value} index={index}>
+          <TabPanel value={value} index={index} {...props}>
             <Card onClick={() => props.history.push(`/news/1`)} className={classes.root}>
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  imageUrl={news.urlToImage}
+                  image={news.urlToImage}
                   title="Contemplative Reptile"
                 />
                 <CardContent>
@@ -66,15 +63,15 @@ const NewsHeadline = (props) => {
                 <div class="profile-cover__info">
                   <ul class="nav myRecordsList">
                     <li className="eventList">
-                      <strong>{news.title}</strong>Title
+                      <strong>15</strong> INVITE
                     </li>
                   </ul>
                 </div>
                   </div>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {news.title}
-                    <p className="eventDate">
-                      <Moment format="D MMM YYYY" withTitle>today</Moment>
+                    {news.description}
+                    <p className="newsDate">
+                      <Moment format="D MMM YYYY" withTitle>{news.publishedAt}</Moment>
                     </p>
                   </Typography>
                   <Typography
@@ -102,46 +99,3 @@ const NewsHeadline = (props) => {
   );
 };
 export default NewsHeadline;
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    "aria-controls": `scrollable-auto-tabpanel-${index}`,
-  };
-}
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  media: {
-    height: 100,
-  },
-}));
