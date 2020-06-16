@@ -8,7 +8,7 @@
     font-size: 18px;
 }
 .eventRecords{
-    float: right;
+    float: left;
 }
 .smallSize{
     font-size: 12px;
@@ -19,4 +19,8 @@
   }
 .disable-link:hover{
     text-decoration: none;
+}
+.inlineStart{
+    display: inline-block;
+    float: left;
 }

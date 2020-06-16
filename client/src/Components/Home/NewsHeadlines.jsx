@@ -12,6 +12,8 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import GetNewsService from '../../Service/GetNewsService';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import 'moment/locale/ar-sa';
 // Styles
 import TabPanel from './style/TabPanel';
 import a11yProps from './style/scrollStyle';
@@ -22,7 +24,6 @@ const NewsHeadline = (props) => {
   const [newsHeadlines, setNewsHeadlines] = React.useState([]);
   const getNewsHeadlines = async () => {
     const newsResult = await GetNewsService();
-    console.log(newsResult.data.articles);
     setNewsHeadlines(newsResult.data.articles);
   };
   React.useEffect(() => {
@@ -63,7 +64,7 @@ const NewsHeadline = (props) => {
                 <div class="profile-cover__info">
                   <ul class="nav myRecordsList">
                     <li className="eventList">
-                      <strong>15</strong> INVITE
+                      <strong> <StarBorderIcon fontSize={"large"} color={"error"} /></strong> 
                     </li>
                   </ul>
                 </div>
@@ -71,7 +72,7 @@ const NewsHeadline = (props) => {
                   <Typography gutterBottom variant="h5" component="h2">
                     {news.description}
                     <p className="newsDate">
-                      <Moment format="D MMM YYYY" withTitle>{news.publishedAt}</Moment>
+                      <Moment locale="ar-sa" format="D MMM YYYY" withTitle>{news.publishedAt}</Moment>
                     </p>
                   </Typography>
                   <Typography

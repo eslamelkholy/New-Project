@@ -11,9 +11,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import NavBar from '../Navbar/Navbar';
 import NewsHeadline from './NewsHeadlines';
-import './Home.css';
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import Moment from "react-moment";
+import './style/Home.css';
+// Service
+import GetNewsService from '../../Service/GetNewsService';
 const Home = (props) => {
+  const [newsHeadlines, setNewsHeadlines] = React.useState([]);
+  const getNewsHeadlines = async () => {
+    const newsResult = await GetNewsService();
+    setNewsHeadlines(newsResult.data.articles);
+  };
+  React.useEffect(() => {
+    getNewsHeadlines();
+  }, []);
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -35,28 +46,40 @@ const Home = (props) => {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={6}>
+            {newsHeadlines.map((news, index) => (
+              <Grid item key={index} xs={12} sm={12} md={12}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
+                    image={news.urlToImage}
+                    title={news.title}
                   />
                   <CardContent className={classes.cardContent}>
+                  
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                    <div class="profile-cover__info inlineStart">
+                  <ul class="nav myRecordsList">
+                    <li className="eventList">
+                      <strong> <StarBorderIcon fontSize={"large"} color={"error"} /></strong> 
+                    </li>
+                  </ul>
+                </div>
+                      {news.title}
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the content.
+                    
+                      {news.description}
+                      <p className="newsDate">
+                      <Moment local="de" format="D MMM YYYY" withTitle>{news.publishedAt}</Moment>
+                    </p>
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
-                      View
+                    <Button size="small" color="primary" startIcon={<StarBorderIcon />}>
+                      Favorite
                     </Button>
                     <Button size="small" color="primary">
-                      Edit
+                      See More
                     </Button>
                   </CardActions>
                 </Card>
@@ -65,16 +88,6 @@ const Home = (props) => {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-      </footer>
-      {/* End footer */}
     </React.Fragment>
   );
 }
@@ -99,15 +112,12 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    textAlign: 'right'
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
   },
   cardContent: {
     flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
+  }
 }));
