@@ -4,12 +4,13 @@ import Login from './Components/authentication/Login';
 import Reigster from './Components/authentication/Register';
 import Home from './Components/Home/Home';
 import './App.css'
+import PrivateRoute from './HOCS/PrivateRoute';
 function App() {
   return (
     <BrowserRouter>
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Reigster} />
-      <Route exact path="/home" component={Home} />
+      <PrivateRoute exact path="/" component={Home} />
     </BrowserRouter>
   );
 }

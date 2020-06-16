@@ -30,7 +30,7 @@ const Login = (props) => {
       localStorage.setItem("token", access_token);
       authContext.setUser(user);
       authContext.setIsAuthenticated(true);
-      props.history.push("/home");
+      props.history.push("/");
     }).catch((err) => {
           if(err.response?.status === 400)
             setMessage({message: "Sorry Invalid Email or Password..", success:false});

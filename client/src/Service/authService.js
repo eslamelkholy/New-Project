@@ -13,7 +13,9 @@ export default{
     },
     isAuthenticated:()=>{
         return axiosinstance.get("api/auth/user")
-        .then(res => res.data)
+        .then(res => {
+            return {isAuthenticated: true, user: res.data.user}
+        })
         .catch(err => {
             return {isAuthenticated: false, user: {username: ""}}
         })

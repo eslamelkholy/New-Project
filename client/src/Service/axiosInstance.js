@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((cfg) => {
   cfg.headers["Accept"] = "application/json";
-  cfg.headers["Authorization"] = `${localStorage.getItem("Authorization")}`;
+  cfg.headers["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
   return cfg;
 });
 
