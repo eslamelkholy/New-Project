@@ -14,6 +14,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('user', 'UserController@user');
     });
 });
+Route::get('mail', 'UserController@sendMailWithRandomPassword');
 
 // Normal Api's >> Tokens & application/json Must Be Included to work
 Route::group(['middleware' => 'auth:api'], function () {

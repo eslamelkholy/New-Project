@@ -28,7 +28,7 @@ const Register = (props) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
     const resetForm = () => {
-        setUser({ username: "", password: "", email: "", date_of_birth: "" });
+        setUser({ username: "", email: "", date_of_birth: "" });
     };
     const onsubmit = async (e) => {
         e.preventDefault();
@@ -36,9 +36,9 @@ const Register = (props) => {
             return;
         try {
             await AuthService.register(user);
-            setMessage({message: "Registedred Succesfully you will Redirect to Login Now..",success: true,});
+            setMessage({message: "Congratulation! Please Check Your Mail now you will Redirect to Login..",success: true,});
             resetForm();
-            timerID = setTimeout(() => props.history.push("/login"), 2000);
+            timerID = setTimeout(() => props.history.push("/login"), 4000);
         }catch (err){
             setErrors({ uniqueEmail: "Sorry This Email Already Exist" });
         }
