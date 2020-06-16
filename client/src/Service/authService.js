@@ -3,7 +3,7 @@ import Axios from 'axios';
 
 export default{
     login: user =>{
-        return Axios.post("api/auth/login", user).then(res => res.data).catch(err => err)
+        return Axios.post("api/auth/login", user).then(res => res.data)
     },
     register: user =>{
         return Axios.post("api/auth/register", user).then(res => res.data)

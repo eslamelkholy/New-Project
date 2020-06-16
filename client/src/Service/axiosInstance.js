@@ -11,13 +11,4 @@ axiosInstance.interceptors.request.use((cfg) => {
   return cfg;
 });
 
-axiosInstance.interceptors.response.use(
-  ({ data }) => data,
-  async (error) => {
-    if (_.get(error, "response.status") === 400) {
-      return false;
-    }
-    return Promise.reject(error);
-  }
-);
 export default axiosInstance;

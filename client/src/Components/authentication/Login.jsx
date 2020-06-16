@@ -8,30 +8,33 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './LoginStyle';
 import AuthService from '../../Service/authService';
 import { AuthContext } from "../../Context/AuthContext";
 import Message from "../Message/UserMessage";
+import AuthValidation from './AuthValidator';
 const Login = (props) => {
   const [user, setUser] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
   const authContext = useContext(AuthContext);
   const onChange = e =>{
       setUser({...user, [e.target.name] :e.target.value});
   }
-  const onsubmit = (e)=>{
+  const onsubmit = async(e)=>{
     e.preventDefault();
-      AuthService.login(user).then(data => {
-        console.log(data)
-        const {access_token, user} = data;
-        localStorage.setItem("token", access_token);
-        authContext.setUser(user);
-        authContext.setIsAuthenticated(true);
-        // props.history.push("/home");
-      }).catch((err) => {
-            if(err.response?.status === 400)
-              setMessage({message: "Sorry Invalid Email or Password..", success:false});
-      })
+    if(!AuthValidation.loginUserValidation(setErrors, user))
+      return;
+    AuthService.login(user).then(data => {
+      const {access_token, user} = data;
+      localStorage.setItem("token", access_token);
+      authContext.setUser(user);
+      authContext.setIsAuthenticated(true);
+      props.history.push("/home");
+    }).catch((err) => {
+          if(err.response?.status === 400)
+            setMessage({message: "Sorry Invalid Email or Password..", success:false});
+    });
   }
   const classes = useStyles();
 
@@ -60,6 +63,14 @@ return (
               autoFocus
               onChange={onChange}
             />
+            {errors.email ? (
+                            <Message
+                                message={{
+                                    message: errors.email,
+                                    success: false,
+                                }}
+                            />
+                        ) : null}
             <TextField
               variant="outlined"
               margin="normal"
@@ -72,6 +83,14 @@ return (
               autoComplete="current-password"
               onChange={onChange}
             />
+            {errors.password ? (
+                            <Message
+                                message={{
+                                    message: errors.password,
+                                    success: false,
+                                }}
+                            />
+                        ) : null}
             <Button
               type="submit"
               fullWidth
@@ -97,35 +116,3 @@ return (
   );
 }
 export default Login;
-
-  
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      height: '100vh',
-    },
-    image: {
-      backgroundImage: 'url(https://source.unsplash.com/random)',
-      backgroundRepeat: 'no-repeat',
-      backgroundColor:
-        theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-    },
-    paper: {
-      margin: theme.spacing(8, 4),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));

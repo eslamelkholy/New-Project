@@ -7,17 +7,14 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import AuthService from "../../Service/authService";
-import { AuthContext } from "../../Context/AuthContext";
 import Message from "../Message/UserMessage";
+import AuthValidation from './AuthValidator';
+import useStyles from './RegisterStyle';
+
 const Register = (props) => {
-    const [user, setUser] = useState({
-        name: "",
-        email: "",
-        date_of_birth: "1997-03-13",
-    });
+    const [user, setUser] = useState({ name: "", email: "", date_of_birth: "1997-03-13"});
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState(null);
     const classes = useStyles();
@@ -33,37 +30,16 @@ const Register = (props) => {
     const resetForm = () => {
         setUser({ username: "", password: "", email: "", date_of_birth: "" });
     };
-    const checkIfValid = () => {
-        const errors = {};
-        let isValid = true;
-        if (user.name.length < 5) {
-            errors.name = "name must be At least 5 Characters";
-            isValid = false;
-        }
-        if (!user.email.includes("@")) {
-            errors.email = "Please enter a Valid Email";
-            isValid = false;
-        }
-        setErrors(errors);
-        console.log(isValid);
-        return isValid;
-    };
     const onsubmit = async (e) => {
         e.preventDefault();
+        if (!AuthValidation.registerUserValidation(setErrors, user))
+            return;
         try {
-            if (checkIfValid()) {
-                const res = await AuthService.register(user);
-                setMessage({
-                    message: "Registedred Succesfully you will Redirect to Login Now..",
-                    success: true,
-                });
-                resetForm();
-                timerID = setTimeout(() => {
-                    props.history.push("/login");
-                }, 4000);
-            }
-        } catch (err) {
-            console.log(err);
+            await AuthService.register(user);
+            setMessage({message: "Registedred Succesfully you will Redirect to Login Now..",success: true,});
+            resetForm();
+            timerID = setTimeout(() => props.history.push("/login"), 2000);
+        }catch (err){
             setErrors({ uniqueEmail: "Sorry This Email Already Exist" });
         }
     };
@@ -169,26 +145,3 @@ const Register = (props) => {
     );
 };
 export default Register;
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    textField: {
-        width: "100%",
-      }
-}));
