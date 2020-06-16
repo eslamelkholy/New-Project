@@ -37,7 +37,7 @@ const Home = (props) => {
           <Typography  component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               <h1>News Content</h1>
             </Typography>
-            <div>
+            <div class="dailyNews">
               <h3>Daily News</h3>
               <NewsHeadline {...props}/>
             </div>
@@ -47,7 +47,7 @@ const Home = (props) => {
           {/* End hero unit */}
           <Grid container spacing={4}>
             {newsHeadlines.map((news, index) => (
-              <Grid item key={index} xs={12} sm={12} md={12}>
+              <Grid item key={index} xs={12} sm={6} md={6}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
@@ -56,7 +56,7 @@ const Home = (props) => {
                   />
                   <CardContent className={classes.cardContent}>
                   
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h6" component="h2">
                     <div class="profile-cover__info inlineStart">
                   <ul class="nav myRecordsList">
                     <li className="eventList">
@@ -66,7 +66,7 @@ const Home = (props) => {
                 </div>
                       {news.title}
                     </Typography>
-                    <Typography>
+                    <Typography variant="caption">
                     
                       {news.description}
                       <p className="newsDate">
@@ -107,6 +107,7 @@ const useStyles = makeStyles((theme) => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
+    marginTop:"-10px"
   },
   card: {
     height: '100%',
