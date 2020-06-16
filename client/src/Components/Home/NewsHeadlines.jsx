@@ -19,7 +19,6 @@ const NewsHeadline = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [newsHeadlines, setNewsHeadlines] = React.useState([]);
-  console.log(process.env.REACT_APP_NEWS_API_KEY);
   const url = 'http://newsapi.org/v2/top-headlines?' +
           'country=eg&' +
           'apiKey='+ process.env.REACT_APP_NEWS_API_KEY;
