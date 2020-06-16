@@ -14,6 +14,7 @@ import Moment from "react-moment";
 import GetNewsService from '../../Service/GetNewsService';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import 'moment/locale/ar-sa';
+import '../../Service/axiosInstance';
 // Styles
 import TabPanel from './style/TabPanel';
 import a11yProps from './style/scrollStyle';
@@ -32,6 +33,9 @@ const NewsHeadline = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const addToFavorites = (news) => {
+    console.log("Fav This", news)
+  }
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
@@ -52,7 +56,7 @@ const NewsHeadline = (props) => {
       {newsHeadlines.map((news, index) => {
         return (
           <TabPanel value={value} index={index} {...props}>
-            <Card onClick={() => props.history.push(`/news/1`)} className={classes.root}>
+            <Card className={classes.root}>
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
@@ -64,7 +68,7 @@ const NewsHeadline = (props) => {
                 <div class="profile-cover__info">
                   <ul class="nav myRecordsList">
                     <li className="eventList">
-                      <strong> <StarBorderIcon fontSize={"large"} color={"error"} /></strong> 
+                      <strong> <StarBorderIcon fontSize={"large"} color={"error"} onClick={() => addToFavorites(news)} /></strong> 
                     </li>
                   </ul>
                 </div>
@@ -85,8 +89,8 @@ const NewsHeadline = (props) => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary">
-                  <Link>Share</Link>
+                <Button size="small" color="primary" onClick={() => addToFavorites(news)} startIcon={<StarBorderIcon />}>
+                  <Link>Add Favorites</Link>
                 </Button>
                 <Button size="small" color="primary">
                   <Link to={news.url}>See More..</Link>

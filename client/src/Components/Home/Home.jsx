@@ -76,7 +76,7 @@ const Home = (props) => {
                   </CardContent>
                   <CardActions>
                     <Button size="small" color="primary" startIcon={<StarBorderIcon />}>
-                      Favorite
+                      Favorites
                     </Button>
                     <Button size="small" color="primary">
                       See More

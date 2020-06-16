@@ -15,22 +15,19 @@ class ArticleRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'required|string',
-            'content' => 'required|string',
-            'picture' => 'required',
-            'source_url' => 'required',
+            'urlToImage' => 'required',
+            'url' => 'required',
         ];
     }
     public function messages(){
         return [
             'title.required' => 'Article title is Required',
             'description.required' => 'Description is Required',
-            'content.required' => 'Content is Required',
-            'source_url.required' => 'Source url is Required',
+            'url.required' => 'Source url is Required',
             'title.string' => 'Title must be string',
             'description.string' => 'Description must be string',
-            'content.string' => 'content must be string',
-            'picture' => 'Picture is required',
-            'source_url' => 'source url is required',
+            'urlToImage' => 'Picture is required',
+            'url' => 'source url is required',
         ];
     }
 
