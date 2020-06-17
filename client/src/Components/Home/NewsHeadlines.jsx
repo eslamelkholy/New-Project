@@ -64,9 +64,9 @@ const NewsHeadline = (props) => {
                       <strong> 
                       {
                         userFavorites.includes(news.title) ? 
-                        <StarIcon fontSize={"large"} color={"error"} onClick={() => removeFromFavorites(news.title)} />
+                        <StarIcon fontSize={"large"} color={"error"} onClick={() => removeFromFavorites(news.id)} />
                         :
-                        <StarBorderIcon fontSize={"large"} color={"error"} onClick={() => addToFavorites(news)} />
+                        <StarBorderIcon fontSize={"large"} color={"error"} onClick={() => addToFavorites(news.id)} />
                       }
                       </strong> 
                     </li>
@@ -91,11 +91,11 @@ const NewsHeadline = (props) => {
               <CardActions>
               {
                 userFavorites.includes(news.title) ? 
-                <Button size="small" color="primary" onClick={() => removeFromFavorites(news.title)} startIcon={<StarIcon />}>
+                <Button size="small" color="primary" onClick={() => removeFromFavorites(news.id)} startIcon={<StarIcon />}>
                   <Link>Remove Favorites</Link>
                 </Button>
                 :
-                <Button size="small" color="primary" onClick={() => addToFavorites(news)} startIcon={<StarBorderIcon />}>
+                <Button size="small" color="primary" onClick={() => addToFavorites(news.id)} startIcon={<StarBorderIcon />}>
                   <Link>Add Favorites</Link>
                 </Button>
               }

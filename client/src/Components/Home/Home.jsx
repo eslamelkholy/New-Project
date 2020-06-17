@@ -31,12 +31,12 @@ const Home = (props) => {
     const newsResult = await NewsService.getNewsData();
     setNewsHeadlines(newsResult.data.articles);
   };
-  const addToFavorites = (news) => {
-    NewsService.addToFavorites(news);
+  const addToFavorites = (articleId) => {
+    NewsService.addToFavorites(articleId);
     getUserFavorites();
   }
-  const removeFromFavorites = (title) => {
-    NewsService.removeFromFavorites(title);
+  const removeFromFavorites = (articleId) => {
+    NewsService.removeFromFavorites(articleId);
     getUserFavorites();
   }
   React.useEffect(() => {
@@ -64,8 +64,8 @@ const Home = (props) => {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {newsHeadlines.map((news, index) => (
-              <Grid item key={index} xs={12} sm={6} md={6}>
+            {newsHeadlines.map((news) => (
+              <Grid item key={news.id} xs={12} sm={6} md={6}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
@@ -87,11 +87,11 @@ const Home = (props) => {
                   <CardActions>
                   {
                     userFavorites.includes(news.title) ? 
-                    <Button size="small" color="primary" onClick={() => removeFromFavorites(news.title)} startIcon={<StarIcon />}>
+                    <Button size="small" color="primary" onClick={() => removeFromFavorites(news.id)} startIcon={<StarIcon />}>
                       <Link>Remove Favorites</Link>
                     </Button>
                     :
-                    <Button size="small" color="primary" onClick={() => addToFavorites(news)} startIcon={<StarBorderIcon />}>
+                    <Button size="small" color="primary" onClick={() => addToFavorites(news.id)} startIcon={<StarBorderIcon />}>
                       <Link>Add Favorites</Link>
                     </Button>
                   }

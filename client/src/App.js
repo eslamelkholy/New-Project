@@ -5,7 +5,6 @@ import Reigster from './Components/authentication/Register';
 import Home from './Components/Home/Home';
 import './App.css'
 import PrivateRoute from './HOCS/PrivateRoute';
-require('dotenv').config();
 function App() {
   return (
     <BrowserRouter>

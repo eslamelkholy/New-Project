@@ -1,8 +1,6 @@
 import axiosInstance from './axiosInstance';
 
-const url = 'http://newsapi.org/v2/top-headlines?' +
-          'country=eg&' +
-          'apiKey='+ process.env.REACT_APP_NEWS_API_KEY;
+const url = 'api/getLatestArticles';
 
 export default{
     getNewsData : async() => {
@@ -11,11 +9,11 @@ export default{
     getUserFavorites: async () => {
         return await axiosInstance.get("api/article");
     },
-    addToFavorites: async(news) => {
-        return await axiosInstance.post("api/article", news);
+    addToFavorites: async(articleId) => {
+        return await axiosInstance.post("api/article", {articleId});
     },
-    removeFromFavorites: async(title) => {
-        return await axiosInstance.post("api/article/remove", {title});
+    removeFromFavorites: async(articleId) => {
+        return await axiosInstance.post("api/article/remove", {articleId});
     }
     
 }
