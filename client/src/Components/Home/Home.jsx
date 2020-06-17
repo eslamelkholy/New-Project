@@ -36,7 +36,7 @@ const Home = (props) => {
         <div className={classes.heroContent}>
           <Container class="newsContainer container" maxWidth="sm">
           <Typography  component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              <h1>News Content</h1>
+              <h1>Top Headlines in Egypt</h1>
             </Typography>
             <div class="dailyNews">
               <h3>Daily News</h3>
