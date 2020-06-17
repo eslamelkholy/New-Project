@@ -12,11 +12,9 @@ class CreateArticlesTable extends Migration
             $table->bigIncrements("id");
             $table->string("title");
             $table->string("description");
-            $table->string("urlToImage");
+            $table->text("urlToImage");
             $table->text("content")->nullable();
-            $table->string("url");
-            $table->unsignedBigInteger("user_id");
-            $table->foreign("user_id")->references("id")->on("users")->onDelete('cascade');
+            $table->text("url");
             $table->timestamps();
         });
     }

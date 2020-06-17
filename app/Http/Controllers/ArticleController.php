@@ -10,10 +10,14 @@ class ArticleController extends Controller
 {
     public function store(ArticleRequest $request)
     {
-        $request['user_id'] = Auth::id();
-        $article = Article::create($request->all());
-        Auth::user()->favorites()->syncWithoutDetaching($article->id);
-        return response()->json(["message" => "Article Saved to Favorite Successfully"], 201);
+        $article = Article::where('title', $request->title)->first();
+        if(!$article)
+        {
+            $newArticle = Article::create($request->all());
+            $this->addArticleToUserFavorites($newArticle->id);
+        }else
+            $this->addArticleToUserFavorites($article->id);
+        return response()->json(["message" => "Article Added To Favorites"], 201);
     }
 
     public function destroy($id)
@@ -23,5 +27,10 @@ class ArticleController extends Controller
             return response()->json(["message" => "Article Not Found"]);
         $article->delete();
         return response()->json(null, 204);
+    }
+
+    public function addArticleToUserFavorites($articleId)
+    {
+        Auth::user()->favorites()->syncWithoutDetaching($articleId);
     }
 }

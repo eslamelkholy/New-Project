@@ -19,6 +19,7 @@ import '../../Service/axiosInstance';
 import TabPanel from './style/TabPanel';
 import a11yProps from './style/scrollStyle';
 import useStyles from './style/headLinesStyle';
+import axiosInstance from "../../Service/axiosInstance";
 const NewsHeadline = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -33,8 +34,8 @@ const NewsHeadline = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const addToFavorites = (news) => {
-    console.log("Fav This", news)
+  const addToFavorites = async (news) => {
+    await axiosInstance.post("api/article", news);
   }
   return (
     <div className={classes.root}>
