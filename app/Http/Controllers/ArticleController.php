@@ -26,7 +26,7 @@ class ArticleController extends Controller
     // Get User Favorites Articles
     public function getUserFavorites(Request $request)
     {
-        return response()->json(["userFavorites" => Auth::user()->favorites()->pluck('title')->toArray()]);
+        return response()->json(["FavoritesData" => ['UserFavoritesId' => Auth::user()->favorites()->pluck('article_id')->toArray(), "Favorites" => Auth::user()->favorites]]);
     }
 
     // Add Article To User Favorites

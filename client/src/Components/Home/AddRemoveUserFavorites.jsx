@@ -7,20 +7,20 @@ import { AuthContext } from '../../Context/AuthContext';
 import NewsService from '../../Service/NewsService';
 const AddRemoveUserFavorites = (props) => {
     const news = props.news;
-    const {userFavorites} = useContext(AuthContext);
-    const { getUserFavorites } = useContext(AuthContext);
+    const {userFavoritesId} = useContext(AuthContext);
+    const { getUserFavoritesData } = useContext(AuthContext);
     const addToFavorites = (articleId) => {
       NewsService.addToFavorites(articleId);
-      getUserFavorites();
+      getUserFavoritesData();
     }
     const removeFromFavorites = (articleId) => {
       NewsService.removeFromFavorites(articleId);
-      getUserFavorites();
+      getUserFavoritesData();
   }
     return(
         <Fragment>
         {
-            userFavorites.includes(news.title) ? 
+          userFavoritesId.includes(news.id) ? 
             <Button size="small" variant="contained" color="primary" onClick={() => removeFromFavorites(news.id)} startIcon={<StarIcon />}>
               Remove Favorites
             </Button>

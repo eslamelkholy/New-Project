@@ -26,15 +26,15 @@ const NewsHeadline = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const newsHeadlines = props.newsHeadlines;
-  const {userFavorites} = useContext(AuthContext);
-    const { getUserFavorites } = useContext(AuthContext);
+  const {userFavoritesId} = useContext(AuthContext);
+    const { getUserFavoritesData } = useContext(AuthContext);
   const addToFavorites = (articleId) => {
     NewsService.addToFavorites(articleId);
-    getUserFavorites();
+    getUserFavoritesData();
   }
   const removeFromFavorites = (articleId) => {
     NewsService.removeFromFavorites(articleId);
-    getUserFavorites();
+    getUserFavoritesData();
 }
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -74,7 +74,7 @@ const NewsHeadline = (props) => {
                     <li className="eventList">
                       <strong> 
                       {
-                        userFavorites.includes(news.title) ? 
+                        userFavoritesId.includes(news.id) ? 
                         <StarIcon fontSize={"large"} color={"error"} onClick={() => removeFromFavorites(news.id)} />
                         :
                         <StarBorderIcon fontSize={"large"} color={"error"} onClick={() => addToFavorites(news.id)} />

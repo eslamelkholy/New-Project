@@ -5,17 +5,18 @@ export const AuthContext = createContext();
 
 export default ({ children }) =>{
     const [user, setUser] = useState(null);
+    const [userFavoritesId, setUserFavoritesId] = React.useState([]);
     const [userFavorites, setUserFavorites] = React.useState([]);
-    
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const[isLoaded, setIsLoaded] = useState(false);
 
-    const getUserFavorites = async () => {
+    const getUserFavoritesData = async () => {
         const userFavoritesData = await NewsService.getUserFavorites();
-        setUserFavorites(userFavoritesData.data.userFavorites);
+        setUserFavorites(userFavoritesData.data.FavoritesData.Favorites);
+        setUserFavoritesId(userFavoritesData.data.FavoritesData.UserFavoritesId);
      }
     useEffect(() => {
-        getUserFavorites();
+        getUserFavoritesData();
         AuthService.isAuthenticated().then(data =>{
             setIsAuthenticated(data.isAuthenticated)
             setUser(data.user);
@@ -25,7 +26,7 @@ export default ({ children }) =>{
     return(
         <Fragment>
             {!isLoaded ? <h1>Loading</h1> 
-            : <AuthContext.Provider value={{user, setUser, isAuthenticated, setIsAuthenticated, userFavorites, setUserFavorites, getUserFavorites}}>
+            : <AuthContext.Provider value={{user, setUser, isAuthenticated, setIsAuthenticated, userFavoritesId, userFavorites, getUserFavoritesData}}>
                 {children}
             </AuthContext.Provider>}
         </Fragment>

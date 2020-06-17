@@ -51,6 +51,7 @@ const Home = (props) => {
               <Grid item key={news.id} xs={12} sm={6} md={6}>
                 <Card className={classes.card}>
                   <CardMedia
+                  onClick={() => props.history.push(`/article/${news.id}`)}
                     className={classes.cardMedia}
                     image={news.urlToImage}
                     title={news.title}
