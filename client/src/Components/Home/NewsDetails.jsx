@@ -17,27 +17,13 @@ import AddRemoveUserFavorites from './AddRemoveUserFavorites';
 const NewsDetails = (props) => {
     const [news, setNews] = React.useState({});
     const classes = useStyles();
-    const [userFavorites, setUserFavorites] = React.useState([]);
     const getNewsDetails = async() => {
         const newsResult = await NewsService.getNewsDetails(props.match.params.id);
         setNews(newsResult.data.article);
     }
     React.useEffect(() => {
         getNewsDetails();
-        getUserFavorites();
     }, []);
-    const getUserFavorites = async () => {
-        const userFavoritesData = await NewsService.getUserFavorites();
-        setUserFavorites(userFavoritesData.data.userFavorites);
-      }
-    const addToFavorites = (articleId) => {
-        NewsService.addToFavorites(articleId);
-        getUserFavorites();
-      }
-      const removeFromFavorites = (articleId) => {
-        NewsService.removeFromFavorites(articleId);
-        getUserFavorites();
-      }
   return (
     <React.Fragment>
       <CssBaseline />
@@ -60,7 +46,7 @@ const NewsDetails = (props) => {
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                <AddRemoveUserFavorites userFavorites={userFavorites} news={news} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
+                <AddRemoveUserFavorites news={news} />
                 </Grid>
               </Grid>
             </div>

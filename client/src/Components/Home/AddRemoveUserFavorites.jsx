@@ -1,14 +1,22 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import Button from "@material-ui/core/Button";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
-
+// Service & Context
+import { AuthContext } from '../../Context/AuthContext';
+import NewsService from '../../Service/NewsService';
 const AddRemoveUserFavorites = (props) => {
-    const userFavorites = props.userFavorites;
     const news = props.news;
-    const addToFavorites = props.addToFavorites;
-    const removeFromFavorites = props.removeFromFavorites;
-    
+    const {userFavorites} = useContext(AuthContext);
+    const { getUserFavorites } = useContext(AuthContext);
+    const addToFavorites = (articleId) => {
+      NewsService.addToFavorites(articleId);
+      getUserFavorites();
+    }
+    const removeFromFavorites = (articleId) => {
+      NewsService.removeFromFavorites(articleId);
+      getUserFavorites();
+  }
     return(
         <Fragment>
         {

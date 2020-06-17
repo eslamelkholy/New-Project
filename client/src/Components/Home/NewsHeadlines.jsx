@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -9,7 +9,6 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
@@ -20,13 +19,23 @@ import TabPanel from './style/TabPanel';
 import a11yProps from './style/scrollStyle';
 import useStyles from './style/headLinesStyle';
 import AddRemoveUserFavorites from "./AddRemoveUserFavorites";
+// Service & Context
+import { AuthContext } from '../../Context/AuthContext';
+import NewsService from '../../Service/NewsService';
 const NewsHeadline = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const userFavorites = props.userFavorites;
   const newsHeadlines = props.newsHeadlines;
-  const addToFavorites = props.addToFavorites;
-  const removeFromFavorites = props.removeFromFavorites;
+  const {userFavorites} = useContext(AuthContext);
+    const { getUserFavorites } = useContext(AuthContext);
+  const addToFavorites = (articleId) => {
+    NewsService.addToFavorites(articleId);
+    getUserFavorites();
+  }
+  const removeFromFavorites = (articleId) => {
+    NewsService.removeFromFavorites(articleId);
+    getUserFavorites();
+}
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -91,7 +100,7 @@ const NewsHeadline = (props) => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-              <AddRemoveUserFavorites userFavorites={userFavorites} news={news} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
+              <AddRemoveUserFavorites news={news} />
                 <Button onClick={() => props.history.push(`/article/${news.id}`)} size="small" color="primary" variant="contained">
                   See More..
                 </Button>

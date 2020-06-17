@@ -19,27 +19,12 @@ import AddRemoveUserFavorites from './AddRemoveUserFavorites';
 
 const Home = (props) => {
   const [newsHeadlines, setNewsHeadlines] = React.useState([]);
-  const [userFavorites, setUserFavorites] = React.useState([]);
-
-  const getUserFavorites = async () => {
-    const userFavoritesData = await NewsService.getUserFavorites();
-    setUserFavorites(userFavoritesData.data.userFavorites);
-  }
   const getNewsHeadlines = async () => {
     const newsResult = await NewsService.getNewsData();
     setNewsHeadlines(newsResult.data.articles);
   };
-  const addToFavorites = (articleId) => {
-    NewsService.addToFavorites(articleId);
-    getUserFavorites();
-  }
-  const removeFromFavorites = (articleId) => {
-    NewsService.removeFromFavorites(articleId);
-    getUserFavorites();
-  }
   React.useEffect(() => {
     getNewsHeadlines();
-    getUserFavorites();
   }, []);
   const classes = useStyles();
   return (
@@ -55,7 +40,7 @@ const Home = (props) => {
             </Typography>
             <div class="dailyNews">
               <h3>Daily News</h3>
-              <NewsHeadline {...props} userFavorites={userFavorites} newsHeadlines={newsHeadlines} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
+              <NewsHeadline {...props} newsHeadlines={newsHeadlines}/>
             </div>
           </Container>
         </div>
@@ -83,7 +68,7 @@ const Home = (props) => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                  <AddRemoveUserFavorites userFavorites={userFavorites} news={news} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
+                  <AddRemoveUserFavorites news={news} />
                     <Button variant="contained" size="small" color="primary" onClick={() => props.history.push(`/article/${news.id}`)} >
                       See More
                     </Button>
