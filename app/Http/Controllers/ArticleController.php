@@ -8,9 +8,14 @@ use Auth;
 use App\Article;
 class ArticleController extends Controller
 {
+    public function index(Request $request)
+    {;
+        return response()->json(["userFavorites" => Auth::user()->favorites()->pluck('title')->toArray()]);
+    }
+
     public function store(ArticleRequest $request)
     {
-        $article = Article::where('title', $request->title)->first();
+        $article = $article = $this->findArticle($request->title);
         if(!$article)
         {
             $newArticle = Article::create($request->all());
@@ -20,17 +25,22 @@ class ArticleController extends Controller
         return response()->json(["message" => "Article Added To Favorites"], 201);
     }
 
-    public function destroy($id)
+    public function removeFromFavorites(Request $request)
     {
-        $article = Article::find($id);
-        if(is_null($article))
-            return response()->json(["message" => "Article Not Found"]);
-        $article->delete();
+        $article = $this->findArticle($request->title);
+        if(!$article)
+            return response()->json(["message" => "Article Not Foud"], 404);
+        Auth::user()->favorites()->detach($article->id);
         return response()->json(null, 204);
     }
 
     public function addArticleToUserFavorites($articleId)
     {
         Auth::user()->favorites()->syncWithoutDetaching($articleId);
+    }
+
+    public function findArticle($ArticleTitle)
+    {
+        return Article::where('title',$ArticleTitle)->first();
     }
 }

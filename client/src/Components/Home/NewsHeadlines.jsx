@@ -11,32 +11,24 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import GetNewsService from '../../Service/GetNewsService';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
 import 'moment/locale/ar-sa';
 import '../../Service/axiosInstance';
 // Styles
 import TabPanel from './style/TabPanel';
 import a11yProps from './style/scrollStyle';
 import useStyles from './style/headLinesStyle';
-import axiosInstance from "../../Service/axiosInstance";
 const NewsHeadline = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [newsHeadlines, setNewsHeadlines] = React.useState([]);
-  const getNewsHeadlines = async () => {
-    const newsResult = await GetNewsService();
-    setNewsHeadlines(newsResult.data.articles);
-  };
-  React.useEffect(() => {
-    getNewsHeadlines();
-  }, []);
+  const userFavorites = props.userFavorites;
+  const newsHeadlines = props.newsHeadlines;
+  const addToFavorites = props.addToFavorites;
+  const removeFromFavorites = props.removeFromFavorites;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const addToFavorites = async (news) => {
-    await axiosInstance.post("api/article", news);
-  }
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
@@ -69,7 +61,14 @@ const NewsHeadline = (props) => {
                 <div class="profile-cover__info">
                   <ul class="nav myRecordsList">
                     <li className="eventList">
-                      <strong> <StarBorderIcon fontSize={"large"} color={"error"} onClick={() => addToFavorites(news)} /></strong> 
+                      <strong> 
+                      {
+                        userFavorites.includes(news.title) ? 
+                        <StarIcon fontSize={"large"} color={"error"} onClick={() => removeFromFavorites(news.title)} />
+                        :
+                        <StarBorderIcon fontSize={"large"} color={"error"} onClick={() => addToFavorites(news)} />
+                      }
+                      </strong> 
                     </li>
                   </ul>
                 </div>
@@ -90,9 +89,16 @@ const NewsHeadline = (props) => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
+              {
+                userFavorites.includes(news.title) ? 
+                <Button size="small" color="primary" onClick={() => removeFromFavorites(news.title)} startIcon={<StarIcon />}>
+                  <Link>Remove Favorites</Link>
+                </Button>
+                :
                 <Button size="small" color="primary" onClick={() => addToFavorites(news)} startIcon={<StarBorderIcon />}>
                   <Link>Add Favorites</Link>
                 </Button>
+              }
                 <Button size="small" color="primary">
                   <Link to={news.url}>See More..</Link>
                 </Button>

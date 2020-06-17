@@ -7,23 +7,41 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './style/HomeStyle';
 import Container from '@material-ui/core/Container';
 import NavBar from '../Navbar/Navbar';
 import NewsHeadline from './NewsHeadlines';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import StarIcon from '@material-ui/icons/Star';
+import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import './style/Home.css';
 // Service
-import GetNewsService from '../../Service/GetNewsService';
+import NewsService from '../../Service/NewsService';
+
 const Home = (props) => {
   const [newsHeadlines, setNewsHeadlines] = React.useState([]);
+  const [userFavorites, setUserFavorites] = React.useState([]);
+
+  const getUserFavorites = async () => {
+    const userFavoritesData = await NewsService.getUserFavorites();
+    setUserFavorites(userFavoritesData.data.userFavorites);
+  }
   const getNewsHeadlines = async () => {
-    const newsResult = await GetNewsService();
+    const newsResult = await NewsService.getNewsData();
     setNewsHeadlines(newsResult.data.articles);
   };
+  const addToFavorites = (news) => {
+    NewsService.addToFavorites(news);
+    getUserFavorites();
+  }
+  const removeFromFavorites = (title) => {
+    NewsService.removeFromFavorites(title);
+    getUserFavorites();
+  }
   React.useEffect(() => {
     getNewsHeadlines();
+    getUserFavorites();
   }, []);
   const classes = useStyles();
   return (
@@ -39,7 +57,7 @@ const Home = (props) => {
             </Typography>
             <div class="dailyNews">
               <h3>Daily News</h3>
-              <NewsHeadline {...props}/>
+              <NewsHeadline {...props} userFavorites={userFavorites} newsHeadlines={newsHeadlines} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
             </div>
           </Container>
         </div>
@@ -57,17 +75,9 @@ const Home = (props) => {
                   <CardContent className={classes.cardContent}>
                   
                     <Typography gutterBottom variant="h6" component="h2">
-                    <div class="profile-cover__info inlineStart">
-                  <ul class="nav myRecordsList">
-                    <li className="eventList">
-                      <strong> <StarBorderIcon fontSize={"large"} color={"error"} /></strong> 
-                    </li>
-                  </ul>
-                </div>
                       {news.title}
                     </Typography>
                     <Typography variant="caption">
-                    
                       {news.description}
                       <p className="newsDate">
                       <Moment local="de" format="D MMM YYYY" withTitle>{news.publishedAt}</Moment>
@@ -75,9 +85,16 @@ const Home = (props) => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary" startIcon={<StarBorderIcon />}>
-                      Favorites
+                  {
+                    userFavorites.includes(news.title) ? 
+                    <Button size="small" color="primary" onClick={() => removeFromFavorites(news.title)} startIcon={<StarIcon />}>
+                      <Link>Remove Favorites</Link>
                     </Button>
+                    :
+                    <Button size="small" color="primary" onClick={() => addToFavorites(news)} startIcon={<StarBorderIcon />}>
+                      <Link>Add Favorites</Link>
+                    </Button>
+                  }
                     <Button size="small" color="primary">
                       See More
                     </Button>
@@ -92,33 +109,3 @@ const Home = (props) => {
   );
 }
 export default Home;
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-    marginTop:"-10px"
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    textAlign: 'right'
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  }
-}));

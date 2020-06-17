@@ -14,8 +14,6 @@ class ArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'description' => 'required|string',
-            'urlToImage' => 'required',
             'url' => 'required',
         ];
     }
