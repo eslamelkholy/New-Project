@@ -65,5 +65,8 @@ const useStyles = makeStyles((theme) => ({
     typography: {
       padding: theme.spacing(2),
     },
+    button:{
+      marginLeft:"10px"
+    }
   }));
 export default useStyles;

@@ -19,6 +19,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import HomeIcon from "@material-ui/icons/Home";
 import { Link } from "react-router-dom";
 import useStyles from './NavbarStyle';
+import StarIcon from '@material-ui/icons/Star';
+import Button from "@material-ui/core/Button";
+
 const NavBar = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -150,6 +153,13 @@ const NavBar = (props) => {
                   </ListItemIcon>
                   <Typography variant="inherit">Home </Typography>
                 </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <StarIcon fontSize="medium" color={"primary"} />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Favorites </Typography>
+                </MenuItem>
+                
               </Link>
             </MenuList>
           </Popover>
@@ -171,6 +181,27 @@ const NavBar = (props) => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+          <Button
+                href="/"
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+                startIcon={<HomeIcon />}
+                
+              >
+                Home
+              </Button>
+          <Button
+                href="/favorites"
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+                startIcon={<StarIcon />}
+              >
+                Favorites
+              </Button>
             <IconButton
               edge="end"
               aria-label="account of current user"
