@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
 use Auth;
 use App\Article;
-use GuzzleHttp\Client;
 class ArticleController extends Controller
 {
     public function index(Request $request)
@@ -26,6 +25,7 @@ class ArticleController extends Controller
         return response()->json(["message" => "Article Added To Favorites"], 201);
     }
 
+    // Detach Articles from User Favorites
     public function removeFromFavorites(Request $request)
     {
         $article = $this->findArticle($request->title);
@@ -35,25 +35,6 @@ class ArticleController extends Controller
         return response()->json(null, 204);
     }
     
-    // Save News Article From The External Api
-    public function saveNewsArticles(Request $request)
-    {
-        $articles = $this->getArticles();
-        foreach($articles as $article)
-            if(!Article::where('title',$article->title)->exists())
-               Article::create((array)$article); 
-    }
-    // Fetch News From External Api
-    public function getArticles()
-    {
-        $client = new Client();
-        $response = $client->request('GET', 'http://newsapi.org/v2/top-headlines', [
-            'query' => ['country' => 'eg', 'apiKey' => env('APP_NEWS_API_KEY')]
-        ]);
-        $json = json_decode($response->getBody());
-        return $json->articles;
-    }
-
     // Attach Articles to User Favorite
     public function addArticleToUserFavorites($articleId)
     {
