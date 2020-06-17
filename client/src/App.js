@@ -11,8 +11,7 @@ function App() {
     <BrowserRouter>
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Reigster} />
-      {/* <PrivateRoute exact path="/ome" component={Home} /> */}
-      <Route exact path="/" component={Home} />
+      <PrivateRoute exact path="/" component={Home} />
     </BrowserRouter>
   );
 }
