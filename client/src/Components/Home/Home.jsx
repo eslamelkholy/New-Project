@@ -11,13 +11,11 @@ import useStyles from './style/HomeStyle';
 import Container from '@material-ui/core/Container';
 import NavBar from '../Navbar/Navbar';
 import NewsHeadline from './NewsHeadlines';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import StarIcon from '@material-ui/icons/Star';
-import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import './style/Home.css';
 // Service
 import NewsService from '../../Service/NewsService';
+import AddRemoveUserFavorites from './AddRemoveUserFavorites';
 
 const Home = (props) => {
   const [newsHeadlines, setNewsHeadlines] = React.useState([]);
@@ -85,17 +83,8 @@ const Home = (props) => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                  {
-                    userFavorites.includes(news.title) ? 
-                    <Button size="small" color="primary" onClick={() => removeFromFavorites(news.id)} startIcon={<StarIcon />}>
-                      <Link>Remove Favorites</Link>
-                    </Button>
-                    :
-                    <Button size="small" color="primary" onClick={() => addToFavorites(news.id)} startIcon={<StarBorderIcon />}>
-                      <Link>Add Favorites</Link>
-                    </Button>
-                  }
-                    <Button size="small" color="primary">
+                  <AddRemoveUserFavorites userFavorites={userFavorites} news={news} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
+                    <Button size="small" color="primary" onClick={() => props.history.push(`/article/${news.id}`)} >
                       See More
                     </Button>
                   </CardActions>

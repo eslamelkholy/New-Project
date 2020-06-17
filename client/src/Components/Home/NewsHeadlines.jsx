@@ -19,6 +19,7 @@ import '../../Service/axiosInstance';
 import TabPanel from './style/TabPanel';
 import a11yProps from './style/scrollStyle';
 import useStyles from './style/headLinesStyle';
+import AddRemoveUserFavorites from "./AddRemoveUserFavorites";
 const NewsHeadline = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -54,7 +55,8 @@ const NewsHeadline = (props) => {
                 <CardMedia
                   className={classes.media}
                   image={news.urlToImage}
-                  title="Contemplative Reptile"
+                  title={news.title}
+                  onClick={() => props.history.push(`/article/${news.id}`)}
                 />
                 <CardContent>
                 <div className="eventRecords">
@@ -89,18 +91,9 @@ const NewsHeadline = (props) => {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-              {
-                userFavorites.includes(news.title) ? 
-                <Button size="small" color="primary" onClick={() => removeFromFavorites(news.id)} startIcon={<StarIcon />}>
-                  <Link>Remove Favorites</Link>
-                </Button>
-                :
-                <Button size="small" color="primary" onClick={() => addToFavorites(news.id)} startIcon={<StarBorderIcon />}>
-                  <Link>Add Favorites</Link>
-                </Button>
-              }
+              <AddRemoveUserFavorites userFavorites={userFavorites} news={news} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
                 <Button size="small" color="primary">
-                  <Link to={news.url}>See More..</Link>
+                  <Link to={`/article/${news.id}`}>See More..</Link>
                 </Button>
               </CardActions>
             </Card>
