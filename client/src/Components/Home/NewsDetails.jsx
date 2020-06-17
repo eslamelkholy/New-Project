@@ -8,7 +8,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import NavBar from '../Navbar/Navbar';
 import useStyles from './style/NewsDetailsStyle';
 // Service
 import NewsService from '../../Service/NewsService';
@@ -27,7 +26,6 @@ const NewsDetails = (props) => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <NavBar />
       <main>
         {/* News Image */}
         <div className={classes.heroContent}>

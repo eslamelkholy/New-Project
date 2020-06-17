@@ -14,8 +14,7 @@
     font-size: 12px;
 }
 .disable-link {
-    color:black;
-    
+    color:white;
   }
 .disable-link:hover{
     text-decoration: none;

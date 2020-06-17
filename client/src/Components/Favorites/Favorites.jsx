@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import NavBar from '../Navbar/Navbar';
 import useStyles from './style/FavoritesStyle';
 // Service & Context
 import { AuthContext } from '../../Context/AuthContext';
@@ -12,7 +11,6 @@ const Favorites = (props) => {
     const classes = useStyles();
     return (
         <React.Fragment>
-            <NavBar/>
             <CssBaseline />
             <main>
                 <div className={classes.heroContent}>

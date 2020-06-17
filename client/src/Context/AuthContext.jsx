@@ -16,9 +16,10 @@ export default ({ children }) =>{
         setUserFavoritesId(userFavoritesData.data.FavoritesData.UserFavoritesId);
      }
     useEffect(() => {
-        getUserFavoritesData();
         AuthService.isAuthenticated().then(data =>{
             setIsAuthenticated(data.isAuthenticated)
+            if(data.isAuthenticated)
+                getUserFavoritesData();
             setUser(data.user);
             setIsLoaded(true)
         });

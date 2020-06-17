@@ -7,7 +7,6 @@ import './style/Home.css';
 // Service
 import NewsService from '../../Service/NewsService';
 // Components
-import NavBar from '../Navbar/Navbar';
 import NewsHeadline from './NewsHeadlines';
 import ListNewsComponent from './ListNewsComponent';
 
@@ -24,7 +23,6 @@ const Home = (props) => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <NavBar />
       <main>
         {/* Hero unit */}
         <div className={classes.heroContent}>

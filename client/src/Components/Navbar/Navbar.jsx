@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, Fragment} from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -21,8 +21,10 @@ import { Link } from "react-router-dom";
 import useStyles from './NavbarStyle';
 import StarIcon from '@material-ui/icons/Star';
 import Button from "@material-ui/core/Button";
+import { AuthContext } from '../../Context/AuthContext';
 
 const NavBar = (props) => {
+  const { isAuthenticated } = useContext(AuthContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
@@ -145,22 +147,28 @@ const NavBar = (props) => {
               horizontal: "center",
             }}
           >
+          
             <MenuList>
-              <Link to="/" className="disable-link ">
+              <Link to="/" className="disable-link">
                 <MenuItem>
                   <ListItemIcon>
                     <HomeIcon fontSize="medium" color={"primary"} />
                   </ListItemIcon>
                   <Typography variant="inherit">Home </Typography>
                 </MenuItem>
+                </Link>
+                {isAuthenticated? 
+                  <Link to="/favorites" className="disable-link">
                 <MenuItem>
+                
                   <ListItemIcon>
                     <StarIcon fontSize="medium" color={"primary"} />
                   </ListItemIcon>
                   <Typography variant="inherit">Favorites </Typography>
                 </MenuItem>
-                
-              </Link>
+                </Link>
+                : null
+          }
             </MenuList>
           </Popover>
           <Typography className={classes.title} variant="h6" noWrap>
@@ -180,9 +188,10 @@ const NavBar = (props) => {
             />
           </div>
           <div className={classes.grow} />
+          {
+            isAuthenticated?
           <div className={classes.sectionDesktop}>
           <Button
-                href="/"
                 variant="contained"
                 color="primary"
                 size="small"
@@ -190,17 +199,17 @@ const NavBar = (props) => {
                 startIcon={<HomeIcon />}
                 
               >
-                Home
+                <Link  to="/" className="disable-link">
+                Home</Link>
               </Button>
           <Button
-                href="/favorites"
                 variant="contained"
                 color="primary"
                 size="small"
                 className={classes.button}
                 startIcon={<StarIcon />}
               >
-                Favorites
+                <Link to="/favorites" className="disable-link">Favorites</Link>
               </Button>
             <IconButton
               edge="end"
@@ -212,7 +221,9 @@ const NavBar = (props) => {
             >
               <AccountCircle />
             </IconButton>
-          </div>
+          </div> : null
+        }
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -226,8 +237,12 @@ const NavBar = (props) => {
           </div>
         </Toolbar>
       </AppBar>
+      {
+        isAuthenticated? <Fragment>
       {renderMobileMenu}
       {renderMenu}
+      </Fragment> : null
+      }
     </div>
   );
 };
