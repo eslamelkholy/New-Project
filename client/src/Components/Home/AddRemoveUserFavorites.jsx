@@ -13,11 +13,11 @@ const AddRemoveUserFavorites = (props) => {
         <Fragment>
         {
             userFavorites.includes(news.title) ? 
-            <Button size="small" color="primary" onClick={() => removeFromFavorites(news.id)} startIcon={<StarIcon />}>
+            <Button size="small" variant="contained" color="primary" onClick={() => removeFromFavorites(news.id)} startIcon={<StarIcon />}>
               Remove Favorites
             </Button>
             :
-            <Button size="small" color="primary" onClick={() => addToFavorites(news.id)} startIcon={<StarBorderIcon />}>
+            <Button size="small" variant="contained" color="primary" onClick={() => addToFavorites(news.id)} startIcon={<StarBorderIcon />}>
               Add Favorites
             </Button>
         }

@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'UserController@login');
     Route::post('register', 'UserController@register');
-    Route::group([
-        'middleware' => 'auth:api'
-    ], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'UserController@logout');
         Route::get('user', 'UserController@user');
     });
@@ -21,4 +19,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get("article", 'ArticleController@getUserFavorites');
     Route::post("article", 'ArticleController@addArticleToFavorite');
     Route::post("article/remove", 'ArticleController@removeFromFavorites');
+    Route::get('article/{id}', 'ArticleController@showArticle');
 });

@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
       height: 500,
+      borderRadius: "5%",
+      border:"1px solid"
     },
   }));
   export default useStyles;

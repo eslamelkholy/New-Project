@@ -1,10 +1,8 @@
 import axiosInstance from './axiosInstance';
 
-const url = 'api/getLatestArticles';
-
 export default{
     getNewsData : async() => {
-        return await axiosInstance.get(url);
+        return await axiosInstance.get('api/getLatestArticles');
     },
     getUserFavorites: async () => {
         return await axiosInstance.get("api/article");
@@ -14,6 +12,9 @@ export default{
     },
     removeFromFavorites: async(articleId) => {
         return await axiosInstance.post("api/article/remove", {articleId});
+    },
+    getNewsDetails: async(id) => {
+        return await axiosInstance.get(`api/article/${id}`);
     }
     
 }

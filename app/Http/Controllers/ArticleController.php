@@ -8,15 +8,28 @@ use Auth;
 use App\Article;
 class ArticleController extends Controller
 {
+    // Get Latest Released Articles
     public function getLatestArticles(Request $request)
     {
         return response()->json([ 'articles'=> Article::orderBy('id', 'desc')->take(20)->get()], 200);
     }
+
+    // Get Article Details
+    public function showArticle(Request $request, $id)
+    {
+        $article = $this->findArticle($id);
+        if(!$article)
+            return response()->json(["message" => "Article Not Found"], 404);
+        return response()->json(['article' => $article], 200);
+    }
+
+    // Get User Favorites Articles
     public function getUserFavorites(Request $request)
     {
         return response()->json(["userFavorites" => Auth::user()->favorites()->pluck('title')->toArray()]);
     }
 
+    // Add Article To User Favorites
     public function addArticleToFavorite(Request $request)
     {
         $article = $this->findArticle($request->articleId);

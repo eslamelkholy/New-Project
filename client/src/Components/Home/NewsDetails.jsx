@@ -10,11 +10,34 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import NavBar from '../Navbar/Navbar';
 import useStyles from './style/NewsDetailsStyle';
-const cards = [1];
+// Service
+import NewsService from '../../Service/NewsService';
+import AddRemoveUserFavorites from './AddRemoveUserFavorites';
 
 const NewsDetails = (props) => {
-  const classes = useStyles();
-
+    const [news, setNews] = React.useState({});
+    const classes = useStyles();
+    const [userFavorites, setUserFavorites] = React.useState([]);
+    const getNewsDetails = async() => {
+        const newsResult = await NewsService.getNewsDetails(props.match.params.id);
+        setNews(newsResult.data.article);
+    }
+    React.useEffect(() => {
+        getNewsDetails();
+        getUserFavorites();
+    }, []);
+    const getUserFavorites = async () => {
+        const userFavoritesData = await NewsService.getUserFavorites();
+        setUserFavorites(userFavoritesData.data.userFavorites);
+      }
+    const addToFavorites = (articleId) => {
+        NewsService.addToFavorites(articleId);
+        getUserFavorites();
+      }
+      const removeFromFavorites = (articleId) => {
+        NewsService.removeFromFavorites(articleId);
+        getUserFavorites();
+      }
   return (
     <React.Fragment>
       <CssBaseline />
@@ -24,22 +47,20 @@ const NewsDetails = (props) => {
         <div className={classes.heroContent}>
           <Container maxWidth="lg">
             <Typography component="h1" variant="h4" align="center" color="error" gutterBottom>
-              "بعد الحرارة الشديدة اليوم.. «الأرصاد» تصدر بيانًا عن طقس الغد - Al Masry Al Youm - المصري اليوم"
+              {news.title}
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
             <CardMedia
                   className={classes.media}
-                  image="https://www.skynewsarabia.com/images/v1/2020/06/17/1353468/1200/630/1-1353468.jpg"
-                  title="بعد الحرارة الشديدة اليوم.. «الأرصاد» تصدر بيانًا عن طقس الغد - Al Masry Al Youm - المصري اليوم"
-                  onClick={() => props.history.push(`/article/161`)}
+                  image={news.urlToImage}
+                  title={news.title}
+                  onClick={() => props.history.push(`/article/${news.id}`)}
                 />
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button variant="contained" color="primary">
-                    Main call to action
-                  </Button>
+                <AddRemoveUserFavorites userFavorites={userFavorites} news={news} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
                 </Grid>
               </Grid>
             </div>
@@ -48,29 +69,23 @@ const NewsDetails = (props) => {
         <Container className={classes.cardGrid} maxWidth="lg">
           {/* News Details */}
           <Grid container>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={12} md={12}>
+              <Grid item key={news.id} xs={12} sm={12} md={12}>
                 <Card className={classes.card}>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                  "بعد الحرارة الشديدة اليوم.. «الأرصاد» تصدر بيانًا عن طقس الغد - Al Masry Al Youm - المصري اليوم"
-                      
+                        {news.title}                      
                     </Typography>
                     <Typography>
-                    وصفت منظمة الصحة العالمية، نجاح باحثين بريطانيين، في علاج حالات إصابة حرجة بفيروس كورونا المستجد، بدواء من عائلة "الستيرويدات"، بالإنجاز العلمي، فما هو هذا الدواء وكيف يعمل وماهي آثاره الجانبية ودواعي استعماله؟
+                    {news.description}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
-                      View
-                    </Button>
-                    <Button size="small" color="primary">
-                      Edit
+                    <Button variant="contained" size="small" color="primary" onClick={() => props.history.push(`/`)}>
+                      Browse More News
                     </Button>
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
           </Grid>
         </Container>
       </main>

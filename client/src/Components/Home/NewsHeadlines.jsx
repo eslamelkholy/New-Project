@@ -92,8 +92,8 @@ const NewsHeadline = (props) => {
               </CardActionArea>
               <CardActions>
               <AddRemoveUserFavorites userFavorites={userFavorites} news={news} addToFavorites={addToFavorites} removeFromFavorites={removeFromFavorites}/>
-                <Button size="small" color="primary">
-                  <Link to={`/article/${news.id}`}>See More..</Link>
+                <Button onClick={() => props.history.push(`/article/${news.id}`)} size="small" color="primary" variant="contained">
+                  See More..
                 </Button>
               </CardActions>
             </Card>
