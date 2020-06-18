@@ -42,7 +42,7 @@ This Project Related to News Web Application Where User can Browse top headlines
   - Test Best & Worst Cases Scenarios
   
 # Project Pictures
-![](client/public/Home1.png)
+![](client/public/Home.png)
 ![](client/public/Home2.png)
 ![](client/public/Favorites.png)
 ![](client/public/Login.png)
