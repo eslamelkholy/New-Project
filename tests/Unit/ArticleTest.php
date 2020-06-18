@@ -44,6 +44,16 @@ class ArticleTest extends TestCase
         $this->assertTrue(in_array($article->id, $user->favorites()->pluck('article_id')->toArray()));
     }
 
+    public function testdetachArticleFromUserFavorites()
+    {
+        $article = $this->createArticle();
+        $user = $this->createUser();
+        $this->actingAs($user);
+        $this->ArticleController->addArticleToUserFavorites($article->id);
+        $this->ArticleController->detachArticleFromUserFavorites($article->id);
+        $this->assertFalse(in_array($article->id, $user->favorites()->pluck('article_id')->toArray()));
+    }
+
 
     public function createUser()
     {
