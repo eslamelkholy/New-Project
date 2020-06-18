@@ -14,10 +14,10 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 // Normal Api's >> Tokens & application/json Must Be Included to work
-Route::group(['middleware' => 'auth:api'], function () {
+// Route::group(['middleware' => 'auth:api'], function () {
     Route::get("getLatestArticles", 'ArticleController@getLatestArticles');
     Route::get("article", 'ArticleController@getUserFavorites');
     Route::post("article", 'ArticleController@addArticleToFavorite');
     Route::post("article/remove", 'ArticleController@removeFromFavorites');
     Route::get('article/{id}', 'ArticleController@showArticle');
-});
+// });

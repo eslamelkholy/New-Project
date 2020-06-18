@@ -29,7 +29,7 @@ const NewsDetails = (props) => {
       <main>
         {/* News Image */}
         <div className={classes.heroContent}>
-          <Container maxWidth="lg">
+          <Container maxWidth="md">
             <Typography component="h1" variant="h4" align="center" color="error" gutterBottom>
               {news.title}
             </Typography>
@@ -50,7 +50,7 @@ const NewsDetails = (props) => {
             </div>
           </Container>
         </div>
-        <Container className={classes.cardGrid} maxWidth="lg">
+        <Container className={classes.cardGrid} maxWidth="md">
           {/* News Details */}
           <Grid container>
               <Grid item key={news.id} xs={12} sm={12} md={12}>

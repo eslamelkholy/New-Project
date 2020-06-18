@@ -20,7 +20,7 @@ const Favorites = (props) => {
                     </Typography>
                 </Container>
                 </div>
-                <ListNewsComponent news={userFavorites}/>
+                <ListNewsComponent {...props} news={userFavorites}/>
             </main>
         </React.Fragment>
   );

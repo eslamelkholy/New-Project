@@ -26,7 +26,7 @@ class ArticleController extends Controller
     // Get User Favorites Articles
     public function getUserFavorites(Request $request)
     {
-        return response()->json(["FavoritesData" => ['UserFavoritesId' => Auth::user()->favorites()->pluck('article_id')->toArray(), "Favorites" => Auth::user()->favorites]]);
+        return response()->json(["FavoritesData" => ['UserFavoritesId' => Auth::user()->favorites()->pluck('article_id')->toArray(), "Favorites" => Auth::user()->favorites]], 200);
     }
 
     // Add Article To User Favorites
@@ -45,7 +45,7 @@ class ArticleController extends Controller
         $article = $this->findArticle($request->articleId);
         if(!$article)
             return response()->json(["message" => "Article Not Foud"], 404);
-        Auth::user()->favorites()->detach($article->id);
+        $this->detachArticleFromUserFavorites($article->id);
         return response()->json(null, 204);
     }
     
@@ -53,6 +53,11 @@ class ArticleController extends Controller
     public function addArticleToUserFavorites($articleId)
     {
         Auth::user()->favorites()->syncWithoutDetaching($articleId);
+    }
+
+    public function detachArticleFromUserFavorites($articleId)
+    {
+        Auth::user()->favorites()->detach($articleId);
     }
 
     // Find Article By ID
