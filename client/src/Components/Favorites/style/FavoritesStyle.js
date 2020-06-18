@@ -5,7 +5,8 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(2),
     },
     heroContent: {
-      padding: theme.spacing(1, 0, 0, 0),
+      padding: theme.spacing(2, 0, 0, 0),
+      marginBottom:"-50px"
     },
     cardGrid: {
       paddingTop: theme.spacing(8),

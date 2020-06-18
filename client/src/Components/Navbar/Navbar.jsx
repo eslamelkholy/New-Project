@@ -71,7 +71,7 @@ const NavBar = (props) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link to="/logout" className="disable-link">
+        <Link to="/logout" className="disable-link colorLInk">
           Logout
         </Link>
       </MenuItem>
@@ -149,7 +149,7 @@ const NavBar = (props) => {
           >
           
             <MenuList>
-              <Link to="/" className="disable-link">
+              <Link to="/" className="disable-link colorLInk">
                 <MenuItem>
                   <ListItemIcon>
                     <HomeIcon fontSize="medium" color={"primary"} />
@@ -158,7 +158,7 @@ const NavBar = (props) => {
                 </MenuItem>
                 </Link>
                 {isAuthenticated? 
-                  <Link to="/favorites" className="disable-link">
+                  <Link to="/favorites" className="disable-link colorLInk">
                 <MenuItem>
                 
                   <ListItemIcon>
